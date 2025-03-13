@@ -13,11 +13,11 @@
   WiFiClientSecure client;
   HTTPClient http;
 
-  // Function to connect to Wi-Fi
+  // Function to connect to wifi
   void wificonnect(){
     if(WiFi.status()!=WL_CONNECTED){
       WiFi.disconnect();
-      WiFi.begin(Username, password);// Start Wi-Fi connection
+      WiFi.begin(Username, password);// Start wifi connection
       Serial.println("wifi is connectig");
 
       int attempts=0;
@@ -35,13 +35,13 @@
     }
   }
   // Function to download and write the file to SPIFFS
-  void downloadfile(const char* path,const char* url){
+  void downloadfile(){
   // Ensure at least 2KB of free space for file writing  
     uint64_t freeSpace = SPIFFS.totalBytes() - SPIFFS.usedBytes(); 
     if (freeSpace < 2048) { 
       Serial.println("Insufficient space on SPIFFS");
       return;}
-    int maxtry=3;// Maximum number of retry attempts
+    int maxtry=3;// Maximum number of attempts
     int attempt=0;
     while(attempt<=maxtry){
 
@@ -57,7 +57,7 @@
           Serial.println("cannot open the file");
           return;
         }
-        // Get dat in chunks 
+        // Get data in chunks 
         WiFiClient* stream = http.getStreamPtr();
         uint8_t buffer[1024];// Buffer size for reading data
         size_t size;
@@ -91,7 +91,7 @@
     http.end();
   }
   }
-  void readfile(const char* path){
+  void readfile(){
     // Open the file in read mode
     File file=SPIFFS.open(path,"r");
     if(!file){
@@ -116,8 +116,8 @@
     }
 
     // Download the file and read it
-    downloadfile(path,url);
-    readfile(path);
+    downloadfile();
+    readfile();
   }
 
   void loop() {
